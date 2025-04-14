@@ -16,26 +16,37 @@ import requests
 import io
 matplotlib.use('Agg')
 
+# 현재 작업 디렉토리 설정
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
+
 # 한글 폰트 설정
 @st.cache_resource
 def set_korean_font():
-    # Source Han Sans KR 폰트 다운로드
-    font_url = "https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Korean/SourceHanSansKR-Medium.otf"
-    response = requests.get(font_url)
-    font_path = "SourceHanSansKR-Medium.otf"
-    
-    with open(font_path, "wb") as f:
-        f.write(response.content)
-    
-    # 폰트 등록
-    font_prop = fm.FontProperties(fname=font_path)
-    plt.rcParams['font.family'] = font_prop.get_name()
-    return font_prop
+    try:
+        # Source Han Sans KR 폰트 다운로드
+        font_url = "https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Korean/SourceHanSansKR-Medium.otf"
+        response = requests.get(font_url)
+        font_path = os.path.join(BASE_DIR, "SourceHanSansKR-Medium.otf")
+        
+        with open(font_path, "wb") as f:
+            f.write(response.content)
+        
+        # 폰트 등록
+        font_prop = fm.FontProperties(fname=font_path)
+        plt.rcParams['font.family'] = font_prop.get_name()
+        return font_prop
+    except Exception as e:
+        st.error(f"폰트 설정 중 오류 발생: {str(e)}")
+        return None
 
 # 파일이 존재하는지 확인
 def file_exists(filepath):
     """파일이 존재하는지 확인"""
-    return os.path.exists(filepath)
+    exists = os.path.exists(filepath)
+    if not exists:
+        st.warning(f"파일을 찾을 수 없습니다: {filepath}")
+    return exists
 
 # CSV 파일 로드
 @st.cache_data
@@ -44,11 +55,9 @@ def load_csv(file_path):
     try:
         if file_exists(file_path):
             return pd.read_csv(file_path)
-        else:
-            st.warning(f"파일을 찾을 수 없습니다: {file_path}")
-            return None
+        return None
     except Exception as e:
-        st.error(f"Error loading {file_path}: {str(e)}")
+        st.error(f"CSV 파일 로드 중 오류 발생: {str(e)}")
         return None
 
 # 이미지 로드
@@ -58,11 +67,9 @@ def load_image(file_path):
     try:
         if file_exists(file_path):
             return Image.open(file_path)
-        else:
-            st.warning(f"이미지를 찾을 수 없습니다: {file_path}")
-            return None
+        return None
     except Exception as e:
-        st.error(f"Error loading {file_path}: {str(e)}")
+        st.error(f"이미지 파일 로드 중 오류 발생: {str(e)}")
         return None
 
 # 텍스트 파일 로드
@@ -73,11 +80,9 @@ def load_text(file_path):
         if file_exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as f:
                 return f.read()
-        else:
-            st.warning(f"텍스트 파일을 찾을 수 없습니다: {file_path}")
-            return None
+        return None
     except Exception as e:
-        st.error(f"Error loading {file_path}: {str(e)}")
+        st.error(f"텍스트 파일 로드 중 오류 발생: {str(e)}")
         return None
 
 # JSON 파일 로드
@@ -88,11 +93,9 @@ def load_json(file_path):
         if file_exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
-        else:
-            st.warning(f"JSON 파일을 찾을 수 없습니다: {file_path}")
-            return None
+        return None
     except Exception as e:
-        st.error(f"Error loading {file_path}: {str(e)}")
+        st.error(f"JSON 파일 로드 중 오류 발생: {str(e)}")
         return None
 
 # 메인 함수
@@ -107,6 +110,8 @@ def main():
     
     # 한글 폰트 설정
     font_prop = set_korean_font()
+    if font_prop is None:
+        st.error("한글 폰트 설정에 실패했습니다. 기본 폰트를 사용합니다.")
     
     # 사이드바 메뉴
     st.sidebar.title("자전거 데이터 분석 대시보드")
@@ -118,10 +123,8 @@ def main():
     )
     
     # 데이터 로드
-    data = load_csv("output/data/processed_data.csv")
-    if data is None:
-        st.error("데이터를 불러올 수 없습니다. 파일 경로를 확인해주세요.")
-        return
+    data_path = os.path.join(OUTPUT_DIR, "data", "processed_data.csv")
+    data = load_csv(data_path)
     
     # 홈
     if menu == "홈":
@@ -142,7 +145,6 @@ def main():
         
         # 데이터 분석 흐름도
         st.header("데이터 분석 흐름도")
-        
         flow_chart = """
         ```mermaid
         graph TD
@@ -164,6 +166,10 @@ def main():
     elif menu == "데이터 개요":
         st.title("데이터 개요")
         
+        if data is None:
+            st.error("데이터를 불러올 수 없습니다. 파일 경로를 확인해주세요.")
+            return
+            
         # 데이터 개요 탭
         tabs = st.tabs(["지역별 분포", "연령 분포", "성별 분포", "기타 통계"])
         
@@ -190,10 +196,10 @@ def main():
         
         with tabs[3]:
             st.header("기타 통계")
-            if file_exists("output/eda_results/eda_report.json"):
-                eda_report = load_json("output/eda_results/eda_report.json")
-                if eda_report:
-                    st.json(eda_report)
+            eda_path = os.path.join(OUTPUT_DIR, "eda_results", "eda_report.json")
+            eda_report = load_json(eda_path)
+            if eda_report:
+                st.json(eda_report)
     
     # 감성 분석
     elif menu == "감성 분석":
@@ -204,7 +210,8 @@ def main():
         
         with tabs[0]:
             st.header("감성 분포")
-            sentiment_data = load_csv("output/sentiment/sentiment_distribution.csv")
+            sentiment_path = os.path.join(OUTPUT_DIR, "sentiment", "sentiment_distribution.csv")
+            sentiment_data = load_csv(sentiment_path)
             if sentiment_data is not None:
                 fig, ax = plt.subplots(figsize=(10, 6))
                 sentiment_data['sentiment'].value_counts().plot(kind='pie', autopct='%1.1f%%', ax=ax)
@@ -212,7 +219,8 @@ def main():
         
         with tabs[1]:
             st.header("감성 예측 결과")
-            predictions = load_csv("output/sentiment/predictions.csv")
+            predictions_path = os.path.join(OUTPUT_DIR, "sentiment", "predictions.csv")
+            predictions = load_csv(predictions_path)
             if predictions is not None:
                 st.dataframe(predictions.head())
     
@@ -225,13 +233,15 @@ def main():
         
         with tabs[0]:
             st.header("주제별 핵심 키워드")
-            topics = load_csv("output/topic/topics.csv")
+            topics_path = os.path.join(OUTPUT_DIR, "topic", "topics.csv")
+            topics = load_csv(topics_path)
             if topics is not None:
                 st.dataframe(topics)
         
         with tabs[1]:
             st.header("적정 토픽 수")
-            coherence = load_csv("output/topic/coherence_scores.csv")
+            coherence_path = os.path.join(OUTPUT_DIR, "topic", "coherence_scores.csv")
+            coherence = load_csv(coherence_path)
             if coherence is not None:
                 fig, ax = plt.subplots(figsize=(10, 6))
                 plt.plot(coherence['num_topics'], coherence['coherence_score'])
@@ -241,13 +251,15 @@ def main():
         
         with tabs[2]:
             st.header("토픽별 대표 문서")
-            representative_docs = load_csv("output/topic/representative_docs.csv")
+            docs_path = os.path.join(OUTPUT_DIR, "topic", "representative_docs.csv")
+            representative_docs = load_csv(docs_path)
             if representative_docs is not None:
                 st.dataframe(representative_docs)
         
         with tabs[3]:
             st.header("토픽 분포")
-            topic_dist = load_csv("output/topic/topic_distribution.csv")
+            dist_path = os.path.join(OUTPUT_DIR, "topic", "topic_distribution.csv")
+            topic_dist = load_csv(dist_path)
             if topic_dist is not None:
                 fig, ax = plt.subplots(figsize=(10, 6))
                 topic_dist.plot(kind='bar', ax=ax)
@@ -256,7 +268,8 @@ def main():
         
         with tabs[4]:
             st.header("토픽별 워드클라우드")
-            wordcloud_img = load_image("output/topic/wordcloud.png")
+            wordcloud_path = os.path.join(OUTPUT_DIR, "topic", "wordcloud.png")
+            wordcloud_img = load_image(wordcloud_path)
             if wordcloud_img is not None:
                 st.image(wordcloud_img)
     
@@ -269,19 +282,22 @@ def main():
         
         with tabs[0]:
             st.header("키워드 유사도")
-            similarity = load_csv("output/keyword/similarity_matrix.csv")
+            similarity_path = os.path.join(OUTPUT_DIR, "keyword", "similarity_matrix.csv")
+            similarity = load_csv(similarity_path)
             if similarity is not None:
                 fig, ax = plt.subplots(figsize=(12, 8))
                 sns.heatmap(similarity, annot=True, cmap='YlOrRd', ax=ax)
                 st.pyplot(fig)
                 
-            keyword_relations = load_csv("output/keyword/top_keyword_pairs.csv")
-            if not keyword_relations.empty:
+            relations_path = os.path.join(OUTPUT_DIR, "keyword", "top_keyword_pairs.csv")
+            keyword_relations = load_csv(relations_path)
+            if keyword_relations is not None:
                 st.dataframe(keyword_relations)
         
         with tabs[1]:
             st.header("키워드 네트워크")
-            network_img = load_image("output/keyword/network.png")
+            network_path = os.path.join(OUTPUT_DIR, "keyword", "network.png")
+            network_img = load_image(network_path)
             if network_img is not None:
                 st.image(network_img)
         
@@ -293,19 +309,17 @@ def main():
             for i, theme in enumerate(["어린이", "안전", "디자인"]):
                 with theme_tabs[i]:
                     caption = f"{theme} 관련 키워드 네트워크"
-                    file_path = f"output/keyword/theme_{theme}_network.png"
+                    file_path = os.path.join(OUTPUT_DIR, "keyword", f"theme_{theme}_network.png")
                     theme_img = load_image(file_path)
                     if theme_img:
                         st.image(theme_img, caption=caption, use_container_width=True)
                     
                     # 관련 데이터 표시
                     st.subheader(f"{theme} 관련 키워드 상위 관계")
-                    relation_path = f"output/keyword/theme_{theme}_relations.csv"
+                    relation_path = os.path.join(OUTPUT_DIR, "keyword", f"theme_{theme}_relations.csv")
                     relations_df = load_csv(relation_path)
-                    if not relations_df.empty:
+                    if relations_df is not None:
                         st.dataframe(relations_df)
-                    else:
-                        st.warning(f"파일을 찾을 수 없습니다: {relation_path}")
     
     # 페르소나
     elif menu == "페르소나":
@@ -316,24 +330,28 @@ def main():
         
         with tabs[0]:
             st.header("페르소나 프로필")
-            profiles = load_csv("output/persona/cluster_profiles.csv")
+            profiles_path = os.path.join(OUTPUT_DIR, "persona", "cluster_profiles.csv")
+            profiles = load_csv(profiles_path)
             if profiles is not None:
                 st.dataframe(profiles)
         
         with tabs[1]:
             st.header("페르소나 레이더 차트")
-            radar_img = load_image("output/persona/radar_chart.png")
+            radar_path = os.path.join(OUTPUT_DIR, "persona", "radar_chart.png")
+            radar_img = load_image(radar_path)
             if radar_img is not None:
                 st.image(radar_img)
                 
                 # 클러스터 프로필 데이터
-                profiles_df = load_csv("output/persona/cluster_profiles.csv")
-                if not profiles_df.empty:
+                profiles_path = os.path.join(OUTPUT_DIR, "persona", "cluster_profiles.csv")
+                profiles_df = load_csv(profiles_path)
+                if profiles_df is not None:
                     st.dataframe(profiles_df)
         
         with tabs[2]:
             st.header("고객 여정")
-            journey_img = load_image("output/persona/customer_journey.png")
+            journey_path = os.path.join(OUTPUT_DIR, "persona", "customer_journey.png")
+            journey_img = load_image(journey_path)
             if journey_img is not None:
                 st.image(journey_img)
     
@@ -346,26 +364,30 @@ def main():
         
         with tabs[0]:
             st.header("마케팅 채널 효과성")
-            channel_data = load_csv("output/marketing/channel_effectiveness.csv")
+            channel_path = os.path.join(OUTPUT_DIR, "marketing", "channel_effectiveness.csv")
+            channel_data = load_csv(channel_path)
             if channel_data is not None:
                 fig, ax = plt.subplots(figsize=(10, 6))
                 channel_data.plot(kind='bar', ax=ax)
                 plt.xticks(rotation=45)
                 st.pyplot(fig)
             
-            channel_df = load_csv("output/persona/marketing_channel_effectiveness.csv")
-            if not channel_df.empty:
+            channel_df_path = os.path.join(OUTPUT_DIR, "persona", "marketing_channel_effectiveness.csv")
+            channel_df = load_csv(channel_df_path)
+            if channel_df is not None:
                 st.dataframe(channel_df)
         
         with tabs[1]:
             st.header("페르소나별 전환 퍼널")
-            funnel_img = load_image("output/marketing/conversion_funnel.png")
+            funnel_path = os.path.join(OUTPUT_DIR, "marketing", "conversion_funnel.png")
+            funnel_img = load_image(funnel_path)
             if funnel_img is not None:
                 st.image(funnel_img)
         
         with tabs[2]:
             st.header("마케팅 채널 맵")
-            channel_map = load_csv("output/marketing/channel_map.csv")
+            map_path = os.path.join(OUTPUT_DIR, "marketing", "channel_map.csv")
+            channel_map = load_csv(map_path)
             if channel_map is not None:
                 st.dataframe(channel_map)
     

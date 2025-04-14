@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.express as px
-import koreanize_matplotlib
 
 # 페이지 설정
 st.set_page_config(
@@ -65,7 +62,7 @@ def main():
         with tab2:
             st.header("지역별 분석")
             
-            # Plotly를 사용한 지역별 분포
+            # 지역별 분포
             fig = px.bar(
                 data_frame=data['region'].value_counts().reset_index(),
                 x='index',

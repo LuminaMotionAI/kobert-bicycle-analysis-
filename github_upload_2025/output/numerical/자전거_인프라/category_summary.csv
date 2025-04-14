@@ -1,0 +1,3 @@
+file_name,rows,columns,missing_ratio,numeric_cols,categorical_cols
+Bicycle_자전거길_도로_데이터.csv,20115.0,18.0,0.0,6.0,12.0
+Bicycle_공공자전거_수요인구_정보_데이터.csv,537208.0,11.0,0.0,11.0,0.0

@@ -1,0 +1,19 @@
+﻿메타테이블ID,메타테이블명(논리명),메타_영문명,메타_데이터타입,테이터길이,컬럼명변환(논리명),PK여부,NULL여부
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,auser_info_id,VARCHAR(40),40,이용자정보ID,,NOT NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,extrc_word_nm,VARCHAR(200),200,추출단어명,,NOT NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,info_obtn_dt,CHAR(8),8,정보획득일자,,NOT NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,auser_sxdst_cd,VARCHAR(1),1,이용자성별코드,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,age_group_cd,VARCHAR(1),1,연령그룹코드,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,occpn_nm,VARCHAR(50),50,직업명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,hshld_incm_group_nm,VARCHAR(40),40,가구소득그룹명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,mrrg_yn_nm,VARCHAR(10),10,결혼여부명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,chdrn_yn_nm,VARCHAR(10),10,자녀여부명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,rsid_fom_nm,VARCHAR(60),60,주거형태명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,auser_ara_ctprv_nm,VARCHAR(20),20,이용자지역시도명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,auser_ara_gu_nm,VARCHAR(60),60,이용자지역구명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,auser_ara_dong_nm,VARCHAR(60),60,이용자지역동명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,car_group_nm,VARCHAR(200),200,자동차그룹명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,craln_tlphn_mkr_nm,VARCHAR(40),40,휴대전화제조사명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,craln_tlphn_sbscr_cmpn_nm,VARCHAR(40),40,휴대전화가입회사명,,NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,info_obtn_site_url,VARCHAR(4000),6000,정보획득사이트URL,,NOT NULL
+TB_FPL_BIKE_AUSER_INFO_M,자전거코스 이용자 정보,info_obtn_site_subjc_nm,VARCHAR(4000),6000,정보획득사이트제목명,,NULL

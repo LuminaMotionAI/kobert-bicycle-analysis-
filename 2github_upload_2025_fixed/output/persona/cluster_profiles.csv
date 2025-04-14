@@ -1,0 +1,5 @@
+cluster,size,dominant_age,gender_ratio,top_region,category
+Cluster 1,2,30대,61.6% 남성,서울,관광_여행
+Cluster 2,1,30대,55.7% 남성,서울,관심_구매
+Cluster 3,1,30대,58.8% 남성,서울,관광_여행
+Cluster 4,1,30대,62.2% 남성,서울,관광_여행

@@ -1,0 +1,3 @@
+file_name,rows,columns,missing_ratio,numeric_cols,categorical_cols
+Bicycle_자전거_관심인구_용품정보_데이터.csv,3200.0,19.0,0.0,1.0,18.0
+Bicycle_자전거_관심인구_구매정보_데이터.csv,36729.0,16.0,0.0,1.0,15.0

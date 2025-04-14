@@ -13,7 +13,7 @@ import json
 from wordcloud import WordCloud
 import matplotlib
 import requests
-import io
+from io import BytesIO
 matplotlib.use('Agg')
 
 # 현재 작업 디렉토리 설정
@@ -21,24 +21,20 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 
 # 한글 폰트 설정
-@st.cache_resource
 def set_korean_font():
     try:
         # Source Han Sans KR 폰트 다운로드
         font_url = "https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Korean/SourceHanSansKR-Medium.otf"
         response = requests.get(font_url)
-        font_path = os.path.join(BASE_DIR, "SourceHanSansKR-Medium.otf")
-        
-        with open(font_path, "wb") as f:
-            f.write(response.content)
+        font_path = BytesIO(response.content)
         
         # 폰트 등록
         font_prop = fm.FontProperties(fname=font_path)
         plt.rcParams['font.family'] = font_prop.get_name()
-        return font_prop
+        return True
     except Exception as e:
         st.error(f"폰트 설정 중 오류 발생: {str(e)}")
-        return None
+        return False
 
 # 파일이 존재하는지 확인
 def file_exists(filepath):
@@ -49,51 +45,55 @@ def file_exists(filepath):
     return exists
 
 # CSV 파일 로드
-@st.cache_data
 def load_csv(file_path):
     """CSV 파일 로드"""
     try:
         if file_exists(file_path):
             return pd.read_csv(file_path)
-        return None
+        else:
+            st.warning(f"파일을 찾을 수 없습니다: {file_path}")
+            return None
     except Exception as e:
         st.error(f"CSV 파일 로드 중 오류 발생: {str(e)}")
         return None
 
 # 이미지 로드
-@st.cache_data
 def load_image(file_path):
     """이미지 파일 로드"""
     try:
         if file_exists(file_path):
             return Image.open(file_path)
-        return None
+        else:
+            st.warning(f"이미지를 찾을 수 없습니다: {file_path}")
+            return None
     except Exception as e:
-        st.error(f"이미지 파일 로드 중 오류 발생: {str(e)}")
+        st.error(f"이미지 로드 중 오류 발생: {str(e)}")
         return None
 
 # 텍스트 파일 로드
-@st.cache_data
 def load_text(file_path):
     """텍스트 파일 로드"""
     try:
         if file_exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as f:
                 return f.read()
-        return None
+        else:
+            st.warning(f"텍스트 파일을 찾을 수 없습니다: {file_path}")
+            return None
     except Exception as e:
         st.error(f"텍스트 파일 로드 중 오류 발생: {str(e)}")
         return None
 
 # JSON 파일 로드
-@st.cache_data
 def load_json(file_path):
     """JSON 파일 로드"""
     try:
         if file_exists(file_path):
             with open(file_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
-        return None
+        else:
+            st.warning(f"JSON 파일을 찾을 수 없습니다: {file_path}")
+            return None
     except Exception as e:
         st.error(f"JSON 파일 로드 중 오류 발생: {str(e)}")
         return None
@@ -109,8 +109,7 @@ def main():
     )
     
     # 한글 폰트 설정
-    font_prop = set_korean_font()
-    if font_prop is None:
+    if not set_korean_font():
         st.error("한글 폰트 설정에 실패했습니다. 기본 폰트를 사용합니다.")
     
     # 사이드바 메뉴

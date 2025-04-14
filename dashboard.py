@@ -48,7 +48,7 @@ def load_csv(file_path):
             st.warning(f"파일을 찾을 수 없습니다: {file_path}")
             return None
     except Exception as e:
-        st.error(f"파일 로드 중 오류 발생: {e}")
+        st.error(f"Error loading {file_path}: {str(e)}")
         return None
 
 # 이미지 로드
@@ -62,7 +62,7 @@ def load_image(file_path):
             st.warning(f"이미지를 찾을 수 없습니다: {file_path}")
             return None
     except Exception as e:
-        st.error(f"이미지 로드 중 오류 발생: {e}")
+        st.error(f"Error loading {file_path}: {str(e)}")
         return None
 
 # 텍스트 파일 로드
@@ -77,7 +77,7 @@ def load_text(file_path):
             st.warning(f"텍스트 파일을 찾을 수 없습니다: {file_path}")
             return None
     except Exception as e:
-        st.error(f"텍스트 파일 로드 중 오류 발생: {e}")
+        st.error(f"Error loading {file_path}: {str(e)}")
         return None
 
 # JSON 파일 로드
@@ -92,7 +92,7 @@ def load_json(file_path):
             st.warning(f"JSON 파일을 찾을 수 없습니다: {file_path}")
             return None
     except Exception as e:
-        st.error(f"JSON 파일 로드 중 오류 발생: {e}")
+        st.error(f"Error loading {file_path}: {str(e)}")
         return None
 
 # 메인 함수

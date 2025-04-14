@@ -12,23 +12,25 @@ import os
 import json
 from wordcloud import WordCloud
 import matplotlib
+import requests
+import io
 matplotlib.use('Agg')
 
 # 한글 폰트 설정
+@st.cache_resource
 def set_korean_font():
-    plt.rcParams['axes.unicode_minus'] = False
+    # Source Han Sans KR 폰트 다운로드
+    font_url = "https://github.com/adobe-fonts/source-han-sans/raw/release/OTF/Korean/SourceHanSansKR-Medium.otf"
+    response = requests.get(font_url)
+    font_path = "SourceHanSansKR-Medium.otf"
     
-    # 나눔고딕 폰트 설정
-    import matplotlib.font_manager as fm
-    import os
+    with open(font_path, "wb") as f:
+        f.write(response.content)
     
-    # 폰트 파일 다운로드 및 설정
-    os.system('wget https://raw.githubusercontent.com/apparition47/SourceHanSansKR/master/SourceHanSansKR-Medium.otf')
-    font_path = 'SourceHanSansKR-Medium.otf'
+    # 폰트 등록
     font_prop = fm.FontProperties(fname=font_path)
     plt.rcParams['font.family'] = font_prop.get_name()
-    
-    print(f"폰트 설정 완료: {plt.rcParams['font.family']}")
+    return font_prop
 
 # 파일이 존재하는지 확인
 def file_exists(filepath):
@@ -36,58 +38,62 @@ def file_exists(filepath):
     return os.path.exists(filepath)
 
 # CSV 파일 로드
-def load_csv(filepath, encoding='utf-8'):
+@st.cache_data
+def load_csv(file_path):
     """CSV 파일 로드"""
     try:
-        if file_exists(filepath):
-            return pd.read_csv(filepath, encoding=encoding)
+        if file_exists(file_path):
+            return pd.read_csv(file_path)
         else:
-            st.warning(f"파일을 찾을 수 없습니다: {filepath}")
-            return pd.DataFrame()
+            st.warning(f"파일을 찾을 수 없습니다: {file_path}")
+            return None
     except Exception as e:
         st.error(f"파일 로드 중 오류 발생: {e}")
-        return pd.DataFrame()
+        return None
 
 # 이미지 로드
-def load_image(filepath):
+@st.cache_data
+def load_image(file_path):
     """이미지 파일 로드"""
     try:
-        if file_exists(filepath):
-            return Image.open(filepath)
+        if file_exists(file_path):
+            return Image.open(file_path)
         else:
-            st.warning(f"이미지를 찾을 수 없습니다: {filepath}")
+            st.warning(f"이미지를 찾을 수 없습니다: {file_path}")
             return None
     except Exception as e:
         st.error(f"이미지 로드 중 오류 발생: {e}")
         return None
 
 # 텍스트 파일 로드
-def load_text(filepath, encoding='utf-8'):
+@st.cache_data
+def load_text(file_path):
     """텍스트 파일 로드"""
     try:
-        if file_exists(filepath):
-            with open(filepath, 'r', encoding=encoding) as f:
+        if file_exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as f:
                 return f.read()
         else:
-            st.warning(f"텍스트 파일을 찾을 수 없습니다: {filepath}")
-            return ""
+            st.warning(f"텍스트 파일을 찾을 수 없습니다: {file_path}")
+            return None
     except Exception as e:
         st.error(f"텍스트 파일 로드 중 오류 발생: {e}")
-        return ""
+        return None
 
 # JSON 파일 로드
-def load_json(filepath, encoding='utf-8'):
+@st.cache_data
+def load_json(file_path):
     """JSON 파일 로드"""
     try:
-        if file_exists(filepath):
-            with open(filepath, 'r', encoding=encoding) as f:
+        if file_exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         else:
-            st.warning(f"JSON 파일을 찾을 수 없습니다: {filepath}")
-            return {}
+            st.warning(f"JSON 파일을 찾을 수 없습니다: {file_path}")
+            return None
     except Exception as e:
         st.error(f"JSON 파일 로드 중 오류 발생: {e}")
-        return {}
+        return None
 
 # 메인 함수
 def main():
@@ -100,7 +106,7 @@ def main():
     )
     
     # 한글 폰트 설정
-    set_korean_font()
+    font_prop = set_korean_font()
     
     # 사이드바 메뉴
     st.sidebar.title("자전거 데이터 분석 대시보드")
@@ -110,6 +116,12 @@ def main():
         "메뉴 선택",
         ["홈", "데이터 개요", "감성 분석", "토픽 모델링", "키워드 네트워크", "페르소나", "마케팅 채널"]
     )
+    
+    # 데이터 로드
+    data = load_csv("output/data/processed_data.csv")
+    if data is None:
+        st.error("데이터를 불러올 수 없습니다. 파일 경로를 확인해주세요.")
+        return
     
     # 홈
     if menu == "홈":
@@ -157,103 +169,24 @@ def main():
         
         with tabs[0]:
             st.header("지역별 선호도")
-            region_df = load_csv("output/eda_results/regional_preference.csv")
-            if not region_df.empty:
-                # 지역별 합계 계산
-                region_summary = region_df.groupby('region')['count'].sum().reset_index()
-                region_summary = region_summary.sort_values('count', ascending=False)
-                
-                # 카테고리별 시각화
-                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-                
-                # 전체 지역 분포 바 차트
-                sns.barplot(x='count', y='region', data=region_summary.head(10), ax=ax1)
-                ax1.set_title('전체 지역별 선호도 (상위 10개)')
-                ax1.set_xlabel('인원 수')
-                ax1.set_ylabel('지역')
-                
-                # 카테고리별 지역 분포 시각화
-                pivot_df = pd.pivot_table(region_df, values='count', index='region', 
-                                         columns='category', aggfunc='sum').fillna(0)
-                top_regions = region_summary.head(7)['region'].tolist()
-                category_region = pivot_df.loc[top_regions].reset_index()
-                
-                # 가독성을 위해 데이터 정렬 및 멜트
-                melted_df = pd.melt(category_region, id_vars='region', var_name='category', value_name='count')
-                sns.barplot(x='region', y='count', hue='category', data=melted_df, ax=ax2)
-                ax2.set_title('카테고리별 지역 분포 (상위 7개 지역)')
-                ax2.set_xlabel('지역')
-                ax2.set_ylabel('인원 수')
-                plt.xticks(rotation=45)
-                
-                plt.tight_layout()
-                st.pyplot(fig)
-                
-                # 데이터프레임 표시
-                st.subheader("지역별 선호도 데이터")
-                st.dataframe(region_df)
+            region_counts = data['region'].value_counts()
+            fig, ax = plt.subplots(figsize=(10, 6))
+            region_counts.plot(kind='bar', ax=ax)
+            plt.xticks(rotation=45)
+            st.pyplot(fig)
         
         with tabs[1]:
             st.header("연령 분포")
-            age_df = load_csv("output/eda_results/age_distribution.csv")
-            if not age_df.empty:
-                # 연령대별 합계 계산
-                age_summary = age_df.groupby('age_group')['count'].sum().reset_index()
-                
-                # 연령대 매핑 (숫자에서 텍스트로)
-                age_mapping = {2: '20대', 3: '30대', 4: '40대', 5: '50대 이상'}
-                age_summary['age_group'] = age_summary['age_group'].map(age_mapping)
-                
-                # 카테고리별 시각화
-                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-                
-                # 연령대별 합계 시각화
-                ax1.bar(age_summary['age_group'], age_summary['count'])
-                ax1.set_xlabel('연령대')
-                ax1.set_ylabel('인원 수')
-                ax1.set_title('전체 연령별 분포')
-                
-                # 카테고리별 연령 분포 시각화
-                category_age = age_df.groupby(['category', 'age_group'])['count'].sum().reset_index()
-                sns.barplot(x='age_group', y='count', hue='category', data=category_age, ax=ax2)
-                ax2.set_xlabel('연령대')
-                ax2.set_ylabel('인원 수')
-                ax2.set_title('카테고리별 연령 분포')
-                
-                plt.tight_layout()
-                st.pyplot(fig)
-                
-                # 데이터프레임 표시
-                st.subheader("연령 분포 데이터")
-                st.dataframe(age_df)
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.histplot(data=data, x='age', bins=20, ax=ax)
+            st.pyplot(fig)
         
         with tabs[2]:
             st.header("성별 분포")
-            gender_df = load_csv("output/eda_results/gender_distribution.csv")
-            if not gender_df.empty:
-                # 성별 합계 계산
-                gender_summary = gender_df.groupby('gender')['count'].sum().reset_index()
-                
-                # 카테고리별 시각화
-                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-                
-                # 전체 성별 분포 파이 차트
-                ax1.pie(gender_summary['count'], labels=gender_summary['gender'], autopct='%1.1f%%')
-                ax1.set_title('전체 성별 분포')
-                
-                # 카테고리별 성별 분포 시각화
-                category_gender = gender_df.groupby(['category', 'gender'])['count'].sum().reset_index()
-                sns.barplot(x='gender', y='count', hue='category', data=category_gender, ax=ax2)
-                ax2.set_xlabel('성별')
-                ax2.set_ylabel('인원 수')
-                ax2.set_title('카테고리별 성별 분포')
-                
-                plt.tight_layout()
-                st.pyplot(fig)
-                
-                # 데이터프레임 표시
-                st.subheader("성별 분포 데이터")
-                st.dataframe(gender_df)
+            gender_counts = data['gender'].value_counts()
+            fig, ax = plt.subplots(figsize=(8, 6))
+            gender_counts.plot(kind='pie', autopct='%1.1f%%', ax=ax)
+            st.pyplot(fig)
         
         with tabs[3]:
             st.header("기타 통계")
@@ -271,22 +204,17 @@ def main():
         
         with tabs[0]:
             st.header("감성 분포")
-            sentiment_df = load_csv("output/eda_results/sentiment_distribution.csv")
-            if not sentiment_df.empty:
+            sentiment_data = load_csv("output/sentiment/sentiment_distribution.csv")
+            if sentiment_data is not None:
                 fig, ax = plt.subplots(figsize=(10, 6))
-                colors = ['lightcoral', 'lightgreen']
-                ax.bar(sentiment_df['sentiment'], sentiment_df['count'], color=colors)
-                ax.set_xlabel('감성')
-                ax.set_ylabel('리뷰 수')
-                ax.set_title('감성 분포')
+                sentiment_data['sentiment'].value_counts().plot(kind='pie', autopct='%1.1f%%', ax=ax)
                 st.pyplot(fig)
-                st.dataframe(sentiment_df)
         
         with tabs[1]:
             st.header("감성 예측 결과")
-            predictions_df = load_csv("output/predictions.csv")
-            if not predictions_df.empty:
-                st.dataframe(predictions_df.head(20))
+            predictions = load_csv("output/sentiment/predictions.csv")
+            if predictions is not None:
+                st.dataframe(predictions.head())
     
     # 토픽 모델링
     elif menu == "토픽 모델링":
@@ -297,55 +225,40 @@ def main():
         
         with tabs[0]:
             st.header("주제별 핵심 키워드")
-            topics_text = load_text("output/topic_modeling/topics_keywords.txt")
-            if topics_text:
-                st.text(topics_text)
+            topics = load_csv("output/topic/topics.csv")
+            if topics is not None:
+                st.dataframe(topics)
         
         with tabs[1]:
-            st.header("적정 토픽 수 결정")
-            perplexity_img = load_image("output/topic_modeling/perplexity_score.png")
-            if perplexity_img:
-                st.image(perplexity_img, use_container_width=True)
+            st.header("적정 토픽 수")
+            coherence = load_csv("output/topic/coherence_scores.csv")
+            if coherence is not None:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                plt.plot(coherence['num_topics'], coherence['coherence_score'])
+                plt.xlabel('토픽 수')
+                plt.ylabel('일관성 점수')
+                st.pyplot(fig)
         
         with tabs[2]:
             st.header("토픽별 대표 문서")
-            docs_text = load_text("output/topic_modeling/representative_documents.txt")
-            if docs_text:
-                st.text(docs_text)
+            representative_docs = load_csv("output/topic/representative_docs.csv")
+            if representative_docs is not None:
+                st.dataframe(representative_docs)
         
         with tabs[3]:
             st.header("토픽 분포")
-            topic_dist_img = load_image("output/topic_modeling/topic_distribution.png")
-            if topic_dist_img:
-                st.image(topic_dist_img, use_container_width=True)
+            topic_dist = load_csv("output/topic/topic_distribution.csv")
+            if topic_dist is not None:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                topic_dist.plot(kind='bar', ax=ax)
+                plt.xticks(rotation=45)
+                st.pyplot(fig)
         
         with tabs[4]:
             st.header("토픽별 워드클라우드")
-            col1, col2, col3 = st.columns(3)
-            
-            wordcloud_files = [
-                "output/topic_modeling/wordcloud_topic_0.png",
-                "output/topic_modeling/wordcloud_topic_1.png",
-                "output/topic_modeling/wordcloud_topic_2.png",
-                "output/topic_modeling/wordcloud_topic_3.png",
-                "output/topic_modeling/wordcloud_topic_4.png"
-            ]
-            
-            with col1:
-                if file_exists(wordcloud_files[0]):
-                    st.image(load_image(wordcloud_files[0]), caption="토픽 1 워드클라우드")
-                if file_exists(wordcloud_files[3]):
-                    st.image(load_image(wordcloud_files[3]), caption="토픽 4 워드클라우드")
-            
-            with col2:
-                if file_exists(wordcloud_files[1]):
-                    st.image(load_image(wordcloud_files[1]), caption="토픽 2 워드클라우드")
-                if file_exists(wordcloud_files[4]):
-                    st.image(load_image(wordcloud_files[4]), caption="토픽 5 워드클라우드")
-            
-            with col3:
-                if file_exists(wordcloud_files[2]):
-                    st.image(load_image(wordcloud_files[2]), caption="토픽 3 워드클라우드")
+            wordcloud_img = load_image("output/topic/wordcloud.png")
+            if wordcloud_img is not None:
+                st.image(wordcloud_img)
     
     # 키워드 네트워크
     elif menu == "키워드 네트워크":
@@ -355,20 +268,22 @@ def main():
         tabs = st.tabs(["키워드 유사도", "키워드 네트워크", "테마별 분석"])
         
         with tabs[0]:
-            st.header("키워드 유사도 히트맵")
-            heatmap_img = load_image("output/keyword_network/keyword_similarity_heatmap.png")
-            if heatmap_img:
-                st.image(heatmap_img, use_container_width=True)
+            st.header("키워드 유사도")
+            similarity = load_csv("output/keyword/similarity_matrix.csv")
+            if similarity is not None:
+                fig, ax = plt.subplots(figsize=(12, 8))
+                sns.heatmap(similarity, annot=True, cmap='YlOrRd', ax=ax)
+                st.pyplot(fig)
                 
-            keyword_relations = load_csv("output/keyword_network/top_keyword_pairs.csv")
+            keyword_relations = load_csv("output/keyword/top_keyword_pairs.csv")
             if not keyword_relations.empty:
                 st.dataframe(keyword_relations)
         
         with tabs[1]:
-            st.header("키워드 네트워크 시각화")
-            network_img = load_image("output/keyword_network/keyword_network.png")
-            if network_img:
-                st.image(network_img, use_container_width=True)
+            st.header("키워드 네트워크")
+            network_img = load_image("output/keyword/network.png")
+            if network_img is not None:
+                st.image(network_img)
         
         with tabs[2]:
             st.header("테마별 키워드 네트워크")
@@ -378,14 +293,14 @@ def main():
             for i, theme in enumerate(["어린이", "안전", "디자인"]):
                 with theme_tabs[i]:
                     caption = f"{theme} 관련 키워드 네트워크"
-                    file_path = f"output/keyword_network/theme_{theme}_network.png"
+                    file_path = f"output/keyword/theme_{theme}_network.png"
                     theme_img = load_image(file_path)
                     if theme_img:
                         st.image(theme_img, caption=caption, use_container_width=True)
                     
                     # 관련 데이터 표시
                     st.subheader(f"{theme} 관련 키워드 상위 관계")
-                    relation_path = f"output/keyword_network/theme_{theme}_relations.csv"
+                    relation_path = f"output/keyword/theme_{theme}_relations.csv"
                     relations_df = load_csv(relation_path)
                     if not relations_df.empty:
                         st.dataframe(relations_df)
@@ -401,24 +316,15 @@ def main():
         
         with tabs[0]:
             st.header("페르소나 프로필")
-            persona_text = load_text("output/persona/persona_descriptions.txt")
-            if persona_text:
-                sections = persona_text.split("===")
-                for section in sections:
-                    if section.strip():
-                        st.markdown(section)
-                        st.markdown("---")
-                
-                # 클러스터 세부 정보 표시
-                cluster_df = load_csv("output/persona/cluster_details.csv")
-                if not cluster_df.empty:
-                    st.dataframe(cluster_df)
+            profiles = load_csv("output/persona/cluster_profiles.csv")
+            if profiles is not None:
+                st.dataframe(profiles)
         
         with tabs[1]:
             st.header("페르소나 레이더 차트")
-            radar_img = load_image("output/persona/persona_radar_charts.png")
-            if radar_img:
-                st.image(radar_img, use_container_width=True)
+            radar_img = load_image("output/persona/radar_chart.png")
+            if radar_img is not None:
+                st.image(radar_img)
                 
                 # 클러스터 프로필 데이터
                 profiles_df = load_csv("output/persona/cluster_profiles.csv")
@@ -426,10 +332,10 @@ def main():
                     st.dataframe(profiles_df)
         
         with tabs[2]:
-            st.header("고객 여정 타임라인")
-            journey_img = load_image("output/persona/customer_journey_timeline.png")
-            if journey_img:
-                st.image(journey_img, use_container_width=True)
+            st.header("고객 여정")
+            journey_img = load_image("output/persona/customer_journey.png")
+            if journey_img is not None:
+                st.image(journey_img)
     
     # 마케팅 채널
     elif menu == "마케팅 채널":
@@ -440,25 +346,28 @@ def main():
         
         with tabs[0]:
             st.header("마케팅 채널 효과성")
-            effectiveness_img = load_image("output/persona/marketing_channel_effectiveness.png")
-            if effectiveness_img:
-                st.image(effectiveness_img, use_container_width=True)
-                
+            channel_data = load_csv("output/marketing/channel_effectiveness.csv")
+            if channel_data is not None:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                channel_data.plot(kind='bar', ax=ax)
+                plt.xticks(rotation=45)
+                st.pyplot(fig)
+            
             channel_df = load_csv("output/persona/marketing_channel_effectiveness.csv")
             if not channel_df.empty:
                 st.dataframe(channel_df)
         
         with tabs[1]:
             st.header("페르소나별 전환 퍼널")
-            funnel_img = load_image("output/persona/conversion_funnel_by_persona.png")
-            if funnel_img:
-                st.image(funnel_img, use_container_width=True)
+            funnel_img = load_image("output/marketing/conversion_funnel.png")
+            if funnel_img is not None:
+                st.image(funnel_img)
         
         with tabs[2]:
             st.header("마케팅 채널 맵")
-            map_img = load_image("output/persona/marketing_channel_map.png")
-            if map_img:
-                st.image(map_img, use_container_width=True)
+            channel_map = load_csv("output/marketing/channel_map.csv")
+            if channel_map is not None:
+                st.dataframe(channel_map)
     
     # 데이터 인사이트
     st.header("데이터 기반 인사이트")

@@ -14,4 +14,4 @@ transformers==4.37.2
 gensim==4.3.2
 jpype1==1.4.1
 requests==2.31.0
-korean-fonts 
+fonttools==4.38.0 

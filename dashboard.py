@@ -19,6 +19,10 @@ matplotlib.use('Agg')
 # 현재 작업 디렉토리 설정
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# 스타일 설정
+plt.style.use('seaborn')
+plt.rcParams['font.family'] = 'NanumGothic'
+
 # 한글 폰트 설정
 def set_korean_font():
     try:
@@ -89,6 +93,15 @@ def load_json(file_path):
         st.error(f"JSON 파일 로드 중 오류 발생: {str(e)}")
         return {}  # 오류 발생 시 빈 딕셔너리 반환
 
+# 데모 데이터 생성 함수
+def create_demo_data():
+    return pd.DataFrame({
+        'region': ['서울', '경기', '부산'] * 10,
+        'age': np.random.randint(20, 60, 30),
+        'gender': ['남성', '여성'] * 15,
+        'rating': np.random.randint(1, 6, 30)
+    })
+
 # 메인 함수
 def main():
     # 페이지 설정
@@ -112,75 +125,40 @@ def main():
         ["홈", "데이터 개요", "감성 분석", "토픽 모델링", "키워드 네트워크", "페르소나", "마케팅 채널"]
     )
     
-    # 데이터 로드
-    data = load_csv("data/processed_data.csv")
+    # 데모 데이터 사용
+    data = create_demo_data()
     
     # 홈
     if menu == "홈":
         st.title("자전거 시장 데이터 분석 대시보드")
         st.markdown("""
-        이 대시보드는 자전거 관련 데이터 분석 결과를 시각화하여 제공합니다.
+        ## 환영합니다! 👋
+        이 대시보드는 자전거 관련 데이터를 분석하고 시각화하여 보여줍니다.
         
-        ## 주요 기능
-        - **데이터 개요**: 데이터의 기본 통계 및 분포 확인
-        - **감성 분석**: 리뷰 텍스트의 감성 분석 결과
-        - **토픽 모델링**: LDA를 활용한 토픽 모델링 결과
-        - **키워드 네트워크**: 키워드 간 관계 시각화
-        - **페르소나**: 고객 페르소나 프로필
-        - **마케팅 채널**: 마케팅 채널 효과성 분석
+        ### 주요 기능
+        - 📊 데이터 개요
+        - 📈 데이터 시각화
         
-        왼쪽 사이드바에서 메뉴를 선택하여 각 분석 결과를 확인하세요.
+        왼쪽 사이드바에서 원하는 메뉴를 선택하세요.
         """)
         
-        if data.empty:
-            st.warning("데모 데이터를 사용합니다.")
-            # 데모 데이터 생성
-            data = pd.DataFrame({
-                'region': ['서울', '경기', '부산'] * 10,
-                'age': np.random.randint(20, 60, 30),
-                'gender': ['남성', '여성'] * 15,
-                'rating': np.random.randint(1, 6, 30)
-            })
+        st.info("현재 데모 데이터를 사용하고 있습니다.")
     
     # 데이터 개요
     elif menu == "데이터 개요":
         st.title("데이터 개요")
+        st.dataframe(data)
         
-        if data.empty:
-            st.warning("데이터를 불러올 수 없습니다. 데모 데이터를 사용합니다.")
-            # 데모 데이터 생성
-            data = pd.DataFrame({
-                'region': ['서울', '경기', '부산'] * 10,
-                'age': np.random.randint(20, 60, 30),
-                'gender': ['남성', '여성'] * 15,
-                'rating': np.random.randint(1, 6, 30)
-            })
-        
-        # 데이터 개요 탭
-        tabs = st.tabs(["지역별 분포", "연령 분포", "성별 분포", "기타 통계"])
-        
-        with tabs[0]:
-            st.header("지역별 선호도")
-            fig, ax = plt.subplots(figsize=(10, 6))
-            data['region'].value_counts().plot(kind='bar', ax=ax)
-            plt.xticks(rotation=45)
-            st.pyplot(fig)
-        
-        with tabs[1]:
-            st.header("연령 분포")
-            fig, ax = plt.subplots(figsize=(10, 6))
-            sns.histplot(data=data, x='age', bins=20, ax=ax)
-            st.pyplot(fig)
-        
-        with tabs[2]:
-            st.header("성별 분포")
-            fig, ax = plt.subplots(figsize=(8, 6))
-            data['gender'].value_counts().plot(kind='pie', autopct='%1.1f%%', ax=ax)
-            st.pyplot(fig)
-        
-        with tabs[3]:
-            st.header("기타 통계")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("### 기본 통계")
             st.write(data.describe())
+        
+        with col2:
+            st.write("### 데이터 정보")
+            st.write(f"- 총 데이터 수: {len(data):,}개")
+            st.write(f"- 지역 수: {data['region'].nunique():,}개")
+            st.write(f"- 평균 연령: {data['age'].mean():.1f}세")
     
     # 감성 분석
     elif menu == "감성 분석":

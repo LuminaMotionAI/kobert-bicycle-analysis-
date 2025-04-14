@@ -12,4 +12,5 @@ konlpy
 torch
 transformers
 gensim
-jpype1 
+jpype1
+korean-fonts 

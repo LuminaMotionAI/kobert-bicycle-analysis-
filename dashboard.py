@@ -18,17 +18,9 @@ matplotlib.use('Agg')
 # 한글 폰트 설정
 def set_korean_font():
     plt.rcParams['axes.unicode_minus'] = False
-    system = platform.system()
     
-    if system == 'Windows':
-        font_path = 'C:/Windows/Fonts/malgun.ttf'  # 윈도우의 맑은 고딕 폰트
-        if os.path.exists(font_path):
-            font_name = fm.FontProperties(fname=font_path).get_name()
-            plt.rc('font', family=font_name)
-    elif system == 'Darwin':  # macOS
-        plt.rc('font', family='AppleGothic')
-    elif system == 'Linux':
-        plt.rc('font', family='NanumGothic')
+    # Streamlit Cloud에서는 NanumGothic 폰트 사용
+    plt.rc('font', family='NanumGothic')
     
     print(f"폰트 설정 완료: {plt.rcParams['font.family']}")
 

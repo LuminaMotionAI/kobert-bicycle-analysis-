@@ -12,15 +12,21 @@ import os
 import json
 from wordcloud import WordCloud
 import matplotlib
-import platform
 matplotlib.use('Agg')
 
 # 한글 폰트 설정
 def set_korean_font():
     plt.rcParams['axes.unicode_minus'] = False
     
-    # Streamlit Cloud에서는 NanumGothic 폰트 사용
-    plt.rc('font', family='NanumGothic')
+    # 나눔고딕 폰트 설정
+    import matplotlib.font_manager as fm
+    import os
+    
+    # 폰트 파일 다운로드 및 설정
+    os.system('wget https://raw.githubusercontent.com/apparition47/SourceHanSansKR/master/SourceHanSansKR-Medium.otf')
+    font_path = 'SourceHanSansKR-Medium.otf'
+    font_prop = fm.FontProperties(fname=font_path)
+    plt.rcParams['font.family'] = font_prop.get_name()
     
     print(f"폰트 설정 완료: {plt.rcParams['font.family']}")
 

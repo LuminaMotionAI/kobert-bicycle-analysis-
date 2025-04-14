@@ -1,28 +1,3 @@
-﻿메타테이블ID,메타테이블명(논리명),메타_영문명,메타_데이터타입,테이터길이,컬럼명변환(논리명),PK여부,NULL여부
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,auser_lfst_id,VARCHAR(40),40,이용자라이프스타일ID,,NOT NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,info_obtn_dt,CHAR(8),8,정보획득일자,,NOT NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,auser_sxdst_cd,VARCHAR(1),1,이용자성별코드,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,age_group_cd,VARCHAR(1),1,연령그룹코드,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,occpn_nm,VARCHAR(50),50,직업명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,hshld_incm_group_nm,VARCHAR(40),40,가구소득그룹명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,mrrg_yn_nm,VARCHAR(10),10,결혼여부명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,chdrn_yn_nm,VARCHAR(10),10,자녀여부명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,rsid_fom_nm,VARCHAR(60),60,주거형태명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,auser_ara_ctprv_nm,VARCHAR(20),20,이용자지역시도명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,auser_ara_gu_nm,VARCHAR(60),60,이용자지역구명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,auser_ara_dong_nm,VARCHAR(60),60,이용자지역동명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,car_group_nm,VARCHAR(200),200,자동차그룹명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,craln_tlphn_mkr_nm,VARCHAR(40),40,휴대전화제조사명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,craln_tlphn_sbscr_cmpn_nm,VARCHAR(40),40,휴대전화가입회사명,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,frnt_ntds_prfn_cont,VARCHAR(20),20,가구인테리어선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,dgtl_hmpl_prfn_cont,VARCHAR(20),20,디지털가전제품선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,lsur_car_prfn_cont,VARCHAR(20),20,레저자동차선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,bty_prfn_cont,VARCHAR(20),20,뷰티선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,lilhd_kchn_prfn_cont,VARCHAR(20),20,생활주방선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,sprt_fshn_prfn_cont,VARCHAR(20),20,운동패션선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,grcs_helth_prfn_cont,VARCHAR(20),20,식품건강선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,jrny_prfn_cont,VARCHAR(20),20,여행선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,fshn_wear_prfn_cont,VARCHAR(20),20,패션의류선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,auser_fshn_stff_prfn_cont,VARCHAR(20),20,이용자패션잡화선호도내용,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,lfst_cd,VARCHAR(20),20,라이프스타일코드,,NULL
-TB_FPL_BIKE_AUSER_LFST_INFO_M,자전거코스 이용자 라이프스타일,info_obtn_site_url,VARCHAR(4000),6000,정보획득사이트URL,,NOT NULL
+version https://git-lfs.github.com/spec/v1
+oid sha256:38da42b712fa8066e085a4ef2787e4036aaa9229bd0f3506fb85cc345b880872
+size 3892

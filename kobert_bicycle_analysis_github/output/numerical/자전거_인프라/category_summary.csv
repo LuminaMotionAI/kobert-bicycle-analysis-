@@ -1,3 +1,3 @@
-file_name,rows,columns,missing_ratio,numeric_cols,categorical_cols
-Bicycle_자전거길_도로_데이터.csv,20115.0,18.0,0.0,6.0,12.0
-Bicycle_공공자전거_수요인구_정보_데이터.csv,537208.0,11.0,0.0,11.0,0.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:ad505bcd4496f7d0774d797d0d1038d5359d8661960db33b51ef74e8a82df94a
+size 223

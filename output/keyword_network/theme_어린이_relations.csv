@@ -1,11 +1,3 @@
-keyword1,keyword2,similarity
-어린이날,선물,0.797
-생일,선물,0.770
-크리스마스,선물,0.658
-자신,갑자기,0.588
-조카,선물,0.542
-생활,자신,0.540
-크게,부터,0.536
-생활,갑자기,0.513
-자신,전혀,0.508
-어린이날,생일,0.497
+version https://git-lfs.github.com/spec/v1
+oid sha256:0c87a4b766b19782e8a11acacc6456d4cd79ecbb4a2764b6c607c0931ebeee72
+size 267

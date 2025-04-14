@@ -1,20 +1,3 @@
-,count,unique,top,freq,mean,std,min,25%,50%,75%,max,missing_count,missing_ratio
-prcha_prrrg_prduc_id,3200,11,D***,1139,,,,,,,,0,0.0
-info_obtn_dt,3200,9,201905**,440,,,,,,,,0,0.0
-auser_sxdst_cd,3200,2,M,1995,,,,,,,,0,0.0
-age_group_cd,3200.0,,,,3.310625,1.0371708021814827,2.0,2.0,3.0,4.0,5.0,0,0.0
-occpn_nm,3200,15,"사무직 (일반사무직, 공무원, 직업군인)",1980,,,,,,,,0,0.0
-hshld_incm_group_nm,3200,11,200~299만원,1729,,,,,,,,0,0.0
-mrrg_yn_nm,3200,3,      ,1410,,,,,,,,0,0.0
-chdrn_yn_nm,3200,3,          ,2222,,,,,,,,0,0.0
-rsid_fom_nm,3200,5,아파트/ 주상복합,2504,,,,,,,,0,0.0
-auser_ara_ctprv_nm,3200,16,서울,1071,,,,,,,,0,0.0
-auser_ara_gu_nm,3200,188,강남구,121,,,,,,,,0,0.0
-auser_ara_dong_nm,3200,1478,논현동,36,,,,,,,,0,0.0
-craln_tlphn_mkr_nm,3200,4,삼성,2448,,,,,,,,0,0.0
-craln_tlphn_sbscr_cmpn_nm,3200,5,SKT,2196,,,,,,,,0,0.0
-prduc_ctgry_lrcls_nm,3200,5,자전거,1300,,,,,,,,0,0.0
-prduc_ctgry_mdcls_nm,3200,17,자전거/용품,1276,,,,,,,,0,0.0
-prduc_ctgry_smcls_nm,3200,54,자전거,424,,,,,,,,0,0.0
-otdr_prduc_nm,3200,200,[삼천리자전거]하로GS20 7단 접이식자전거  어린이/여성 폴딩자전거,22,,,,,,,,0,0.0
-info_obtn_site_url,3200,198,http://item.gmarket.co.kr/Item?goodscode=1278067146,38,,,,,,,,0,0.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:f5ca95bfd4e89a1a2db7aa62bd2b5da7d0defb8fcccd1526c6854af48a230588
+size 1283

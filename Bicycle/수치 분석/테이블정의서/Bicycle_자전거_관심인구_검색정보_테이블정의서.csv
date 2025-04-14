@@ -1,27 +1,3 @@
-﻿메타테이블ID,메타테이블명(논리명),메타_영문명,메타_데이터타입,테이터길이,컬럼명변환(논리명),PK여부,NULL여부
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,auser_ntrs_id,VARCHAR(40),40,이용자관심사ID,,NOT NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,info_obtn_dt,CHAR(8),8,정보획득일자,,NOT NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,auser_sxdst_cd,VARCHAR(1),1,이용자성별코드,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,age_group_cd,VARCHAR(1),1,연령그룹코드,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,occpn_nm,VARCHAR(50),50,직업명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,hshld_incm_group_nm,VARCHAR(40),40,가구소득그룹명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,mrrg_yn_nm,VARCHAR(10),10,결혼여부명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,chdrn_yn_nm,VARCHAR(10),10,자녀여부명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,rsid_fom_nm,VARCHAR(60),60,주거형태명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,auser_ara_ctprv_nm,VARCHAR(20),20,이용자지역시도명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,auser_ara_gu_nm,VARCHAR(60),60,이용자지역구명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,auser_ara_dong_nm,VARCHAR(60),60,이용자지역동명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,car_group_nm,VARCHAR(200),200,자동차그룹명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,craln_tlphn_mkr_nm,VARCHAR(40),40,휴대전화제조사명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,craln_tlphn_sbscr_cmpn_nm,VARCHAR(40),40,휴대전화가입회사명,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,pltc_dgnt_cont,VARCHAR(20),20,정치관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,ecnm_dgnt_cont,VARCHAR(20),20,경제관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,sct_dgnt_cont,VARCHAR(20),20,사회관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,lilhd_dgnt_cont,VARCHAR(20),20,생활관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,wrld_dgnt_cont,VARCHAR(20),20,세계관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,it_dgnt_cont,VARCHAR(20),20,IT관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,sprt_dgnt_cont,VARCHAR(20),20,운동관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,tv_etmn_dgnt_cont,VARCHAR(20),20,TV연예관심도내용,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,main_ntrs_cd,VARCHAR(20),20,주요관심사코드,,NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,info_obtn_site_url,VARCHAR(4000),6000,정보획득사이트URL,,NOT NULL
-TB_FPL_BIKE_AUSER_NTRS_INFO_M,자전거코스 이용자 관심사,info_obtn_site_subjc_nm,VARCHAR(4000),6000,정보획득사이트제목명,,NULL
+version https://git-lfs.github.com/spec/v1
+oid sha256:e60622a139273b8c102373395af66f426a77316bdf982be30ac0893160e00d9a
+size 3417

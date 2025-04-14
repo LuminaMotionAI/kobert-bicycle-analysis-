@@ -1,17 +1,3 @@
-,count,unique,top,freq,mean,std,min,25%,50%,75%,max,missing_count,missing_ratio
-auser_lfst_id,36729,111,D***,5997,,,,,,,,0,0.0
-info_obtn_dt,36729,9,201906**,5273,,,,,,,,0,0.0
-auser_sxdst_cd,36729,2,M,20476,,,,,,,,0,0.0
-age_group_cd,36729.0,,,,3.3215715102507555,1.0461591139245843,2.0,2.0,3.0,4.0,5.0,0,0.0
-occpn_nm,36729,15,"사무직 (일반사무직, 공무원, 직업군인)",22945,,,,,,,,0,0.0
-hshld_incm_group_nm,36729,11,400~499만원,18386,,,,,,,,0,0.0
-mrrg_yn_nm,36729,3,      ,14290,,,,,,,,0,0.0
-chdrn_yn_nm,36729,3,          ,24115,,,,,,,,0,0.0
-rsid_fom_nm,36729,5,아파트/ 주상복합,28190,,,,,,,,0,0.0
-auser_ara_ctprv_nm,36729,16,서울,12634,,,,,,,,0,0.0
-auser_ara_gu_nm,36729,222,북구,2041,,,,,,,,0,0.0
-auser_ara_dong_nm,36729,2605,화명1동,1218,,,,,,,,0,0.0
-craln_tlphn_mkr_nm,36729,4,삼성,28858,,,,,,,,0,0.0
-craln_tlphn_sbscr_cmpn_nm,36729,5,SKT,24754,,,,,,,,0,0.0
-lfst_cd,36729,10,패션의류,7980,,,,,,,,0,0.0
-info_obtn_site_url,36729,2908,http://m.11st.co.kr/MW/api/app/elevenst/product/getProductDetail.tmall?prdNo=1922461069&appId=01&appType=appmw&appVCA=816&deviceID=198c3238-5334-3795-9b89-08bf4960bcb3&tStoreYN=N&deviceType=android&detailViewType=webviewReady,63,,,,,,,,0,0.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:22048fa5cd26699326ad008cd23a0ad7f378d854dc04c681ea6d838178657fb4
+size 1229

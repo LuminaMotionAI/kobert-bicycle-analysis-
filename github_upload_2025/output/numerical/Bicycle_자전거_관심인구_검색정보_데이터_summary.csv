@@ -1,18 +1,3 @@
-,count,unique,top,freq,mean,std,min,25%,50%,75%,max,missing_count,missing_ratio
-auser_ntrs_id,50937,111,D***,8545,,,,,,,,0,0.0
-info_obtn_dt,50937,9,201908**,7268,,,,,,,,0,0.0
-auser_sxdst_cd,50937,2,M,29941,,,,,,,,0,0.0
-age_group_cd,50937.0,,,,3.3490782731609636,0.9786478800756846,2.0,3.0,3.0,4.0,5.0,0,0.0
-occpn_nm,50937,15,"사무직 (일반사무직, 공무원, 직업군인)",30508,,,,,,,,0,0.0
-hshld_incm_group_nm,50937,11,300~399만원,24678,,,,,,,,0,0.0
-mrrg_yn_nm,50937,3,예    ,21603,,,,,,,,0,0.0
-chdrn_yn_nm,50937,3,          ,29334,,,,,,,,0,0.0
-rsid_fom_nm,50937,5,아파트/ 주상복합,38318,,,,,,,,0,0.0
-auser_ara_ctprv_nm,50937,16,서울,20515,,,,,,,,0,0.0
-auser_ara_gu_nm,50937,220,구로구,2507,,,,,,,,0,0.0
-auser_ara_dong_nm,50937,2638,북가좌1동,1767,,,,,,,,0,0.0
-craln_tlphn_mkr_nm,50937,4,삼성,40266,,,,,,,,0,0.0
-craln_tlphn_sbscr_cmpn_nm,50937,5,SKT,35142,,,,,,,,0,0.0
-main_ntrs_cd,50937,8,사회,30166,,,,,,,,0,0.0
-info_obtn_site_url,50937,7956,https://m.sports.naver.com/wbaseball/index.nhn,215,,,,,,,,0,0.0
-info_obtn_site_subjc_nm,50937,7267,네이버 스포츠,1494,,,,,,,,0,0.0
+version https://git-lfs.github.com/spec/v1
+oid sha256:5d5115bdaf62cce1f1dbc3adf54d7388da98ce50d1bc077b7325bb0d995cdd90
+size 1131

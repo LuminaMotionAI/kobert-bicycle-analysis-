@@ -1,11 +1,3 @@
-gender,count,category,file
-M,1995,관심_구매,Bicycle_자전거_관심인구_용품정보_데이터.csv
-F,1205,관심_구매,Bicycle_자전거_관심인구_용품정보_데이터.csv
-M,20476,관심_구매,Bicycle_자전거_관심인구_구매정보_데이터.csv
-F,16253,관심_구매,Bicycle_자전거_관심인구_구매정보_데이터.csv
-M,14613,관광_여행,Bicycle_자전거_관심인구_숙박정보_데이터.csv
-F,8881,관광_여행,Bicycle_자전거_관심인구_숙박정보_데이터.csv
-M,2403,관광_여행,Bicycle_자전거_관심인구_선호관광지_데이터.csv
-F,1531,관광_여행,Bicycle_자전거_관심인구_선호관광지_데이터.csv
-M,29941,관광_여행,Bicycle_자전거_관심인구_검색정보_데이터.csv
-F,20996,관광_여행,Bicycle_자전거_관심인구_검색정보_데이터.csv
+version https://git-lfs.github.com/spec/v1
+oid sha256:12b031de372b1d6768ae8e3670a20cb0b2c911a72fb177608d8d76739fb8b06c
+size 839

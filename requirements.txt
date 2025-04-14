@@ -7,4 +7,9 @@ Pillow
 wordcloud
 networkx
 plotly
-scikit-learn 
+scikit-learn
+konlpy
+torch
+transformers
+gensim
+jpype1 
